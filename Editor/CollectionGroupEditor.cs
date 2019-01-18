@@ -15,23 +15,7 @@ namespace Ardenfall
 
             CollectionGroup myTarget = (CollectionGroup)target;
 
-            foreach (Collection c in myTarget.GetChildren())
-            {
-                EditorGUILayout.BeginHorizontal();
-
-                EditorGUILayout.LabelField(c.name,EditorStyles.boldLabel);
-
-                if (GUILayout.Button("<-", GUILayout.ExpandWidth(false)))
-                    c.Step(-1);
-
-                if (GUILayout.Button("->", GUILayout.ExpandWidth(false)))
-                    c.Step(1);
-
-                if (GUILayout.Button("Randomize", GUILayout.ExpandWidth(false)))
-                    c.Randomize();
-
-                EditorGUILayout.EndHorizontal();
-            }
+            DrawChildren(myTarget);
 
             EditorGUILayout.Space();
 
@@ -45,7 +29,7 @@ namespace Ardenfall
             if (GUILayout.Button("->", GUILayout.ExpandWidth(false)))
                 myTarget.Step(1);
 
-            if (GUILayout.Button("Randomize", GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("?", GUILayout.ExpandWidth(false)))
                 myTarget.Randomize();
 
             EditorGUILayout.EndHorizontal();
@@ -53,6 +37,34 @@ namespace Ardenfall
             //Scrolling
             if (Event.current.type == EventType.ScrollWheel)
                 myTarget.Step(PrefabCollectionUtility.GetScrollStep(Event.current));
+        }
+
+        public void DrawChildren(Collection collection)
+        {
+            if (collection.GetChildren().Count == 0)
+                return;
+
+            EditorGUI.indentLevel++;
+            foreach (Collection c in collection.GetChildren())
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField(c.name, EditorStyles.boldLabel);
+
+                if (GUILayout.Button("<-", GUILayout.ExpandWidth(false)))
+                    c.Step(-1);
+
+                if (GUILayout.Button("->", GUILayout.ExpandWidth(false)))
+                    c.Step(1);
+
+                if (GUILayout.Button("?", GUILayout.ExpandWidth(false)))
+                    c.Randomize();
+                EditorGUILayout.EndHorizontal();
+
+                DrawChildren(c);
+
+            }
+            EditorGUI.indentLevel--;
         }
 
     }
