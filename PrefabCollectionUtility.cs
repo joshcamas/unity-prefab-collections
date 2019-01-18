@@ -40,19 +40,21 @@ namespace Ardenfall
                 EditorUtility.SetDirty(collection);
             }
 
-            bool isSamePrefab = true;
-
-            if(collection.spawnedObject != null)
-                isSamePrefab = PrefabUtility.GetCorrespondingObjectFromSource(collection.spawnedObject) == collection.prefabs[collection.selectedIndex];
-
             //Out of range
             if (collection.selectedIndex != -1 && collection.selectedIndex >= collection.prefabs.Count)
                 PrefabCollectionUtility.Select(collection.prefabs.Count - 1, collection);
 
-            //Detect change in current prefab
-            else if (collection.selectedIndex != -1 && !isSamePrefab)
-                PrefabCollectionUtility.Select(collection.selectedIndex, collection);
+            else
+            {
+                //Detect change in current prefab
+                bool isSamePrefab = true;
 
+                if (collection.spawnedObject != null)
+                    isSamePrefab = PrefabUtility.GetCorrespondingObjectFromSource(collection.spawnedObject) == collection.prefabs[collection.selectedIndex];
+
+                if (collection.selectedIndex != -1 && !isSamePrefab)
+                    PrefabCollectionUtility.Select(collection.selectedIndex, collection);
+            }
 
         }
         public static bool IsPrefabMode()
@@ -121,8 +123,7 @@ namespace Ardenfall
             target.spawnedObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
             target.hideFlags = HideFlags.None;
-
-
+            
             if (IsPrefabMode())
             {
                 target.spawnedObject.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy;
