@@ -36,7 +36,7 @@ namespace Ardenfall
 
             //Scrolling
             if (Event.current.type == EventType.ScrollWheel)
-                myTarget.Step(PrefabCollectionUtility.GetScrollStep(Event.current));
+                myTarget.Step(CollectionUtility.GetScrollStep(Event.current));
         }
 
         public void DrawChildren(Collection collection)
@@ -67,6 +67,32 @@ namespace Ardenfall
             EditorGUI.indentLevel--;
         }
 
+        private void OnSceneGUI()
+        {
+            Event e = Event.current;
+
+            if (e.type == EventType.ScrollWheel && e.shift)
+            {
+                (target as Collection)?.Step(CollectionUtility.GetScrollStep(e));
+                e.Use();
+            }
+
+            if (e.isMouse && e.button == 2 && e.shift)
+            {
+                (target as Collection)?.Randomize();
+                e.Use();
+            }
+
+            Handles.BeginGUI();
+            //Add padding
+            EditorGUILayout.LabelField("");
+            EditorGUILayout.LabelField("Scroll + Shift: Step through collections");
+            EditorGUILayout.LabelField("Middle Mouse + Shift: Random collections");
+
+            Handles.EndGUI();
+
+        }
     }
+
 }
 

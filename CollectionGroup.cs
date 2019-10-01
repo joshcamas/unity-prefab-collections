@@ -6,7 +6,6 @@ namespace Ardenfall
 {
     public class CollectionGroup : Collection
     {
-
         //Step children
         public override void Step(int step)
         {
@@ -19,7 +18,6 @@ namespace Ardenfall
         //Randomize children
         public override void Randomize()
         {
-            
             foreach(Collection c in GetChildren())
             {
                 c.Randomize();

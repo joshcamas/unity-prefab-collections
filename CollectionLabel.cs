@@ -1,8 +1,6 @@
-using UnityEngine;
 
-#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
-#endif
 
 namespace Ardenfall
 {
@@ -11,7 +9,6 @@ namespace Ardenfall
         public string label = "Label";
         public Color labelColor = Color.white;
         public Vector3 offset;
-
 #if UNITY_EDITOR
         public void OnDrawGizmosSelected()
         {
